@@ -10,6 +10,7 @@ server.get('/', (req, res) => {
     res.json({ hello: "Server running"})
 })
 
+// retrieve all users
 server.get('/api/users', (req, res) => {
     Data.find()
     .then(data => {
@@ -20,10 +21,23 @@ server.get('/api/users', (req, res) => {
     })
 })
 
+// retrieve user by id
 server.get('/api/users/:id', (req, res) => {
-    
+    const {id} = req.params;
+    Data.findById(id)
+    .then(data => {
+        if (!data) {
+            res.data(404).json({ message: "The user with the specified ID does not exist." })
+        } else {
+            res.status(200).json(data)
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ errorMessage: "The user information could not be retrieved." })
+    })
 })
 
+// add new user
 server.post('/api/users', (req, res) => {
     const dbInfo = req.body;
 
@@ -35,6 +49,23 @@ server.post('/api/users', (req, res) => {
     }).catch(err => {
         console.log(err);
         res.status(500).json({ errorMessage: "There was an error while saving the user to the database" })
+    })
+})
+
+// delete user
+server.delete('/api/users/:id', (req, res) => {
+    const {id} = req.params;
+
+    Data.remove(id)
+    .then(data => {
+        if (!data) {
+            res.status(404).json({ message: "The user with the specified ID does not exist." })
+        } else {
+            res.status(200).json(data);
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ errorMessage: "The user could not be removed" })
     })
 })
 
