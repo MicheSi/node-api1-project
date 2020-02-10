@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import UserCard from './UserCard';
-import axios from 'axios';
+import Axios from 'axios';
 
 const UsersList = props => {
     const [user, setUser] = useState([]);
     
     useEffect(() => {
-        axios
+        Axios
         .get('http://localhost:5000/api/users')
         .then(res => {
             console.log(res)
@@ -20,6 +20,7 @@ const UsersList = props => {
             {user.map(user => (
                 <UserCard
                  key={user.id}
+                 id={user.id}
                  name={user.name}
                  bio={user.bio}
                 />
