@@ -1,10 +1,11 @@
 const express = require('express');
-
+const cors = require('cors');
 const Data = require('./data/db');
 
 const server = express ();
 
 server.use(express.json());
+server.use(cors());
 
 server.get('/', (req, res) => {
     res.json({ hello: "Server running"})
