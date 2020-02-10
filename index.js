@@ -27,7 +27,7 @@ server.get('/api/users/:id', (req, res) => {
     Data.findById(id)
     .then(data => {
         if (!data) {
-            res.data(404).json({ message: "The user with the specified ID does not exist." })
+            res.status(404).json({ message: "The user with the specified ID does not exist." })
         } else {
             res.status(200).json(data)
         }
@@ -41,15 +41,17 @@ server.get('/api/users/:id', (req, res) => {
 server.post('/api/users', (req, res) => {
     const dbInfo = req.body;
 
-    if (!dbInfo.name || !dbInfo.bio)
+    if (!dbInfo.name || !dbInfo.bio) {
         res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
-    Data.insert(dbInfo)
-    .then(data => {
+    } else {
+        Data.insert(dbInfo)
+        .then(data => {
             res.status(201).json(data);
-    }).catch(err => {
+        }).catch(err => {
         console.log(err);
         res.status(500).json({ errorMessage: "There was an error while saving the user to the database" })
-    })
+        })
+    }
 })
 
 // delete user
