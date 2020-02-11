@@ -9,15 +9,6 @@ const initialUser = {
 const UpdateUser = props => {
     const [user, setUser] = useState(initialUser);
 
-    useEffect(() => {
-        Axios
-        .get('http://localhost:5000/api/users')
-        .then(res => {
-            
-        })
-        .catch(err => console.log('Cannot fetch data', err))
-    }, [])
-
     const changeHandler = e => {
         setUser({
             ...user,

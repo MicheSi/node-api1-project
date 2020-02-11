@@ -29,3 +29,16 @@ html, body {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+.modal-body form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-body input, .modal-body textarea {
+  width: 400px;
+  border-radius: 5px;
+  margin: 2%;
+}
+
