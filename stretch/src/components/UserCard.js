@@ -10,7 +10,6 @@ const UserCard = (props) => {
 
     const [user, setUser] = useState(initialUser);
 
-    console.log(props)
     useEffect(() => {
         const userToEdit = props
         if (userToEdit) {

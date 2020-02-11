@@ -1,14 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import UsersList from './components/UsersList';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Axios from 'axios';
-
+import UsersList from './components/UsersList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 
 function App() {
-  const [user, setUser] = useState([]);
-    
+  const initialUser = {
+    name: '',
+    bio: ''
+  }
+
+  const [user, setUser] = useState(initialUser);
+  
     useEffect(() => {
         Axios
         .get('http://localhost:5000/api/users')
@@ -19,10 +24,62 @@ function App() {
         .catch(err => console.log('Cannot fetch data', err))
     }, [])
 
+    const [modal, setModal] = useState(false);
+    
+    const toggle = () => setModal(!modal);
+
+    const changeHandler = e => {
+      console.log(e.target.name, e.target.value)
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        Axios
+        .post(`http://localhost:5000/api/users`, user)
+        .then(res => {
+            console.log('added user', res.data)
+            setUser(res.data)
+            window.location.reload()
+        })
+        .catch(err => console.log('Unable to update', err))
+    }
+
   return (
     <div className="App">
       <h1>Stretch Project</h1>
       <h2>List of Users</h2>
+      <div className='addModal'>
+        <Button color='info' className='editBtn' onClick={toggle}>Add User</Button>
+          <Modal isOpen={modal} toggle={toggle} className='addModal'>
+              <ModalHeader toggle={toggle}>Add New User</ModalHeader>
+              <ModalBody>
+                <form onSubmit={handleSubmit}>
+                  <input
+                  type='text'
+                  name='name'
+                  placeholder='Name'
+                  onChange={changeHandler}
+                  value={user.name}
+                  />
+                  <textarea
+                  type='textarea'
+                  name='bio'
+                  placeholder='Bio'
+                  onChange={changeHandler}
+                  value={user.bio}
+                  />
+                </form>
+              </ModalBody>
+              <ModalFooter>
+                  <Button color='info' className='updateBtn' onClick={handleSubmit}>Add User</Button>
+                  <Button color="secondary" onClick={toggle}>Cancel</Button>
+              </ModalFooter>
+          </Modal>
+      </div>
       <UsersList />
     </div>
   );
