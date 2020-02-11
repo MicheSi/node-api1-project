@@ -45,12 +45,23 @@ server.post('/api/users', (req, res) => {
     if (!dbInfo.name || !dbInfo.bio) {
         res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
     } else {
+        console.log(dbInfo)
         Data.insert(dbInfo)
         .then(data => {
-            res.status(201).json(data);
+            // console.log(data)
+            // res.status(201).json(data);
+            Data.findById(data.id)
+            .then(data => {
+                console.log(data)
+                res.status(201).json(data);
+            })
+            .catch(err => {
+                // console.log(err);
+                res.status(500).json({ errorMessage: err.message })
+            })
         }).catch(err => {
         console.log(err);
-        res.status(500).json({ errorMessage: "There was an error while saving the user to the database" })
+        res.status(500).json({ errorMessage: err.message })
         })
     }
 })

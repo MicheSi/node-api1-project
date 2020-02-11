@@ -14,15 +14,15 @@ function App() {
 
   const [user, setUser] = useState(initialUser);
   
-    useEffect(() => {
-        Axios
-        .get('http://localhost:5000/api/users')
-        .then(res => {
-            console.log(res)
-            setUser(res.data)
-        })
-        .catch(err => console.log('Cannot fetch data', err))
-    }, [])
+    // useEffect(() => {
+    //     Axios
+    //     .get('http://localhost:5000/api/users')
+    //     .then(res => {
+    //         console.log(res)
+    //         setUser(res.data)
+    //     })
+    //     .catch(err => console.log('Cannot fetch data', err))
+    // }, [])
 
     const [modal, setModal] = useState(false);
     
@@ -34,6 +34,7 @@ function App() {
             ...user,
             [e.target.name]: e.target.value
         })
+        console.log('new user', user)
     }
 
     const handleSubmit = e => {
@@ -66,16 +67,17 @@ function App() {
                   value={user.name}
                   />
                   <textarea
-                  type='textarea'
+                  type='text'
                   name='bio'
                   placeholder='Bio'
                   onChange={changeHandler}
                   value={user.bio}
                   />
+                  <Button type='submit' color='info' className='updateBtn' >Add User</Button>
                 </form>
               </ModalBody>
               <ModalFooter>
-                  <Button color='info' className='updateBtn' onClick={handleSubmit}>Add User</Button>
+                  <Button type='submit' color='info' className='updateBtn' >Add User</Button>
                   <Button color="secondary" onClick={toggle}>Cancel</Button>
               </ModalFooter>
           </Modal>

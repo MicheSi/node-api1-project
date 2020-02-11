@@ -15,7 +15,7 @@ const UserCard = (props) => {
         if (userToEdit) {
             setUser(userToEdit)
         }
-    }, [])
+    }, [props])
 
     const [modal, setModal] = useState(false);
     
